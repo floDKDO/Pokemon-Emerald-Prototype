@@ -6,6 +6,6 @@
 void print_C_version(void);
 
 //TODO : use SDL_Log ?
-#define LOG(string) do{ fprintf(stderr, string); }while(0)
+#define LOG(...) do{ fprintf(stderr, __VA_ARGS__); }while(0)
 
 #endif // __LOG__FUNCTIONS__H__

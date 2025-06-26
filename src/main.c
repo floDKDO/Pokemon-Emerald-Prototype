@@ -65,9 +65,10 @@ int main(int argc, char* argv[])
                 default:
                     break;
             }
-
+            player_handle_events(&p, e);
         }
         player_draw(&p, renderer);
+        player_update(&p);
 
         Uint32 end_time = SDL_GetTicks();
 
