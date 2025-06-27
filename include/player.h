@@ -18,7 +18,7 @@ struct player
 
 struct player player_init(char* name);
 
-void player_draw(struct player* p, SDL_Renderer* renderer);
+void player_draw(struct player* p, SDL_Rect camera, SDL_Renderer* renderer);
 
 void player_handle_events(struct player* p, SDL_Event e);
 

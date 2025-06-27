@@ -11,6 +11,8 @@
 #endif // DEBUG
 
 #define TILE_SIZE 16
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
 
 
 #endif // __DEFS__H__

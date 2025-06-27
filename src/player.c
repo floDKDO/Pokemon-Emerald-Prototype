@@ -15,11 +15,9 @@ struct player player_init(char* name)
 };
 
 
-void player_draw(struct player* p, SDL_Renderer* renderer)
+void player_draw(struct player* p, SDL_Rect camera, SDL_Renderer* renderer)
 {
-    SDL_Rect r = {p->x, p->y, TILE_SIZE, TILE_SIZE};
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_RenderClear(renderer);
+    SDL_Rect r = {p->x - camera.x, p->y - camera.y, TILE_SIZE, TILE_SIZE};
     CHK(SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255), SDL_GetError());
     CHK(SDL_RenderFillRect(renderer, &r), SDL_GetError());
     SDL_RenderPresent(renderer);

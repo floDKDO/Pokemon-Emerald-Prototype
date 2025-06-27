@@ -21,15 +21,17 @@ int main(int argc, char* argv[])
     char window_title[20] = {"My game"};
 
     SDL_Window* window;
-    NCHK(window = SDL_CreateWindow(window_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_RESIZABLE), SDL_GetError());
+    NCHK(window = SDL_CreateWindow(window_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE), SDL_GetError());
 
     SDL_Renderer* renderer;
     NCHK(renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED), SDL_GetError());
 
     CHK(SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND), SDL_GetError()); //allow transparency
-    CHK(SDL_RenderSetLogicalSize(renderer, 1280, 720), SDL_GetError());
+    CHK(SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT), SDL_GetError());
 
     struct player p = player_init("My player");
+
+    SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
     bool in_game = true;
     SDL_Event e;
@@ -40,6 +42,9 @@ int main(int argc, char* argv[])
     while(in_game)
     {
         Uint32 begin_time = SDL_GetTicks();
+
+        camera.x = p.x + (TILE_SIZE/2) - SCREEN_WIDTH/2;
+        camera.y = p.y + (TILE_SIZE/2) - SCREEN_HEIGHT/2;
 
         while(SDL_PollEvent(&e))
         {
@@ -62,12 +67,26 @@ int main(int argc, char* argv[])
                     }
                     break;
 
+                case SDL_KEYDOWN:
+                    if(e.key.keysym.sym == SDLK_ESCAPE)
+                    {
+                        #ifdef DEBUG
+                        LOG("Key down (%s) event!\n", SDL_GetKeyName(e.key.keysym.sym));
+                        #endif // DEBUG
+                        in_game = false;
+                    }
+                    break;
+
                 default:
                     break;
             }
             player_handle_events(&p, e);
         }
-        player_draw(&p, renderer);
+
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        SDL_RenderClear(renderer);
+
+        player_draw(&p, camera, renderer);
         player_update(&p);
 
         Uint32 end_time = SDL_GetTicks();
