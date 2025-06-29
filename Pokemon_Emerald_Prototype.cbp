@@ -52,6 +52,7 @@
 		<Unit filename="include/defs.h" />
 		<Unit filename="include/log_functions.h" />
 		<Unit filename="include/player.h" />
+		<Unit filename="include/tile.h" />
 		<Unit filename="src/log_functions.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -59,6 +60,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/player.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/tile.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

@@ -433,24 +433,34 @@
 1750966257 c:\users\florian\desktop\pokemon-emerald-prototype\include\log_functions.h
 	<stdio.h>
 
-1751050741 source:c:\users\florian\desktop\pokemon-emerald-prototype\src\main.c
+1751189957 source:c:\users\florian\desktop\pokemon-emerald-prototype\src\main.c
 	<SDL2/SDL.h>
 	<stdio.h>
 	<stdbool.h>
 	"defs.h"
 	"log_functions.h"
 	"player.h"
+	"tile.h"
 
 1751051743 c:\users\florian\desktop\pokemon-emerald-prototype\include\defs.h
 	<stdlib.h>
 
-1751050753 c:\users\florian\desktop\pokemon-emerald-prototype\include\player.h
+1751190065 c:\users\florian\desktop\pokemon-emerald-prototype\include\player.h
 	<SDL2/SDL.h>
 	<stdio.h>
 	<stdbool.h>
 
-1751050794 source:c:\users\florian\desktop\pokemon-emerald-prototype\src\player.c
+1751190099 source:c:\users\florian\desktop\pokemon-emerald-prototype\src\player.c
 	"player.h"
 	"defs.h"
 	"log_functions.h"
+
+1751189585 source:c:\users\florian\desktop\pokemon-emerald-prototype\src\tile.c
+	"tile.h"
+	"defs.h"
+
+1751189371 c:\users\florian\desktop\pokemon-emerald-prototype\include\tile.h
+	<SDL2/SDL.h>
+	<stdio.h>
+	<stdbool.h>
 

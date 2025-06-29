@@ -5,6 +5,7 @@
 #include "defs.h"
 #include "log_functions.h"
 #include "player.h"
+#include "tile.h"
 
 
 int main(int argc, char* argv[])
@@ -31,6 +32,12 @@ int main(int argc, char* argv[])
 
     struct player p = player_init("My player");
 
+    struct tile t[10];
+    for(int i = 0; i < 10; ++i)
+    {
+        t[i] = tile_init(1, 16 * i + 16, 16 * i);
+    }
+
     SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
     bool in_game = true;
@@ -43,8 +50,8 @@ int main(int argc, char* argv[])
     {
         Uint32 begin_time = SDL_GetTicks();
 
-        camera.x = p.x + (TILE_SIZE/2) - SCREEN_WIDTH/2;
-        camera.y = p.y + (TILE_SIZE/2) - SCREEN_HEIGHT/2;
+        camera.x = p.pos.x + (TILE_SIZE/2) - SCREEN_WIDTH/2;
+        camera.y = p.pos.y + (TILE_SIZE/2) - SCREEN_HEIGHT/2;
 
         while(SDL_PollEvent(&e))
         {
@@ -86,7 +93,46 @@ int main(int argc, char* argv[])
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         SDL_RenderClear(renderer);
 
+        for(int i = 0; i < 10; ++i)
+            tile_draw(&t[i], camera, renderer);
+
         player_draw(&p, camera, renderer);
+
+        SDL_RenderPresent(renderer);
+        SDL_RenderClear(renderer);
+
+        for(int i = 0; i < 10; ++i)
+        {
+            if(p.is_walking)
+            {
+                SDL_Rect copy = p.pos;
+
+                if(p.direction[0])
+                {
+                    copy.y -= TILE_SIZE;
+                }
+                else if(p.direction[1])
+                {
+                    copy.y += TILE_SIZE;
+                }
+                else if(p.direction[2])
+                {
+                    copy.x -= TILE_SIZE;
+                }
+                else if(p.direction[3])
+                {
+                    copy.x += TILE_SIZE;
+                }
+
+                if(SDL_HasIntersection(&t[i].pos, &copy))
+                {
+                    printf("Collision!\n");
+                    p.can_walk = false;
+                }
+            }
+            else p.can_walk = true;
+        }
+
         player_update(&p);
 
         Uint32 end_time = SDL_GetTicks();

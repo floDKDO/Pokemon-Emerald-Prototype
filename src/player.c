@@ -6,10 +6,16 @@ struct player player_init(char* name)
 {
     struct player p;
     CHK(snprintf(p.name, MAX_LENGTH_PLAYER_NAME, "%s", name), "Error: snprintf");
-    p.x = 0;
-    p.y = 0;
+
+    p.pos.x = 0;
+    p.pos.y = 0;
+    p.pos.w = TILE_SIZE;
+    p.pos.h = TILE_SIZE;
+
     memset(p.direction, false, 4);
-    p.speed = 5;
+    p.speed = TILE_SIZE;
+    p.can_walk = true;
+    p.is_walking = false;
 
     return p;
 };
@@ -17,11 +23,9 @@ struct player player_init(char* name)
 
 void player_draw(struct player* p, SDL_Rect camera, SDL_Renderer* renderer)
 {
-    SDL_Rect r = {p->x - camera.x, p->y - camera.y, TILE_SIZE, TILE_SIZE};
+    SDL_Rect r = {p->pos.x - camera.x, p->pos.y - camera.y, p->pos.w, p->pos.h};
     CHK(SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255), SDL_GetError());
     CHK(SDL_RenderFillRect(renderer, &r), SDL_GetError());
-    SDL_RenderPresent(renderer);
-    SDL_RenderClear(renderer);
 }
 
 
@@ -33,6 +37,8 @@ void player_handle_events(struct player* p, SDL_Event e)
             #ifdef DEBUG
             LOG("Key down (%s) event!\n", SDL_GetKeyName(e.key.keysym.sym));
             #endif // DEBUG
+
+            p->is_walking = true;
 
             if(e.key.keysym.sym == SDLK_UP)
             {
@@ -56,6 +62,8 @@ void player_handle_events(struct player* p, SDL_Event e)
             #ifdef DEBUG
             LOG("Key up (%s) event!\n", SDL_GetKeyName(e.key.keysym.sym));
             #endif // DEBUG
+
+            p->is_walking = false;
 
             if(e.key.keysym.sym == SDLK_UP)
             {
@@ -83,20 +91,20 @@ void player_handle_events(struct player* p, SDL_Event e)
 
 void player_update(struct player* p)
 {
-    if(p->direction[0] == true)
+    if(p->direction[0] == true && p->can_walk)
     {
-        p->y -= p->speed;
+        p->pos.y -= p->speed;
     }
-    else if(p->direction[1] == true)
+    else if(p->direction[1] == true && p->can_walk)
     {
-        p->y += p->speed;
+        p->pos.y += p->speed;
     }
-    else if(p->direction[2] == true)
+    else if(p->direction[2] == true && p->can_walk)
     {
-        p->x -= p->speed;
+        p->pos.x -= p->speed;
     }
-    else if(p->direction[3] == true)
+    else if(p->direction[3] == true && p->can_walk)
     {
-        p->x += p->speed;
+        p->pos.x += p->speed;
     }
 }

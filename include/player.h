@@ -10,9 +10,11 @@
 struct player
 {
     char name[MAX_LENGTH_PLAYER_NAME];
-    int x, y;
+    SDL_Rect pos;
     bool direction[4]; //UP, DOWN, LEFT, RIGHT
     unsigned int speed;
+    bool can_walk;
+    bool is_walking;
 };
 
 
